@@ -1,0 +1,53 @@
+services:
+  validator:
+    image: solanalabs/solana:v1.18.3
+    command: >
+      bash -c "
+        solana-test-validator
+          --ledger /ledger
+          --reset
+          --quiet
+      "
+    volumes:
+      - validator-ledger:/ledger
+    ports:
+      - '8899:8899'
+
+  dev:
+    build: .
+    depends_on:
+      - validator
+    volumes:
+      # ⬇️  point this to **your actual Anchor workspace** on the host
+      #     (looks like it's click-moon/click-moon from your earlier path)
+      - ./click-moon:/workdir/anchor
+      - ./app:/workdir/app
+    ports:
+      - '3000:3000'
+    command: >
+      bash -c "
+        # 1 ───────────────────────  Solana CLI target  ────────────────────────
+        solana config set --url http://validator:8899 \
+                          --keypair /root/.config/solana/id.json &&
+        solana airdrop 5 || true &&
+
+        # 2 ───────────────────────  Build + deploy program  ───────────────────
+        cd /workdir/anchor &&
+        anchor build &&
+        anchor deploy --provider.cluster localnet &&
+
+        # 3 ───────────────────────  Extract program ID  ───────────────────────
+        PROGRAM_ID=$(grep -m1 -oP '(?<=Program Id: ).*' \
+                     target/deploy/*.json | head -n1) &&
+        echo \"NEXT_PUBLIC_PROGRAM_ID=$PROGRAM_ID\" > /workdir/app/.env.local &&
+
+        # 4 ───────────────────────  Generate IDL for UI  ──────────────────────
+        anchor client gen --typescript /workdir/app/src/idl &&
+
+        # 5 ───────────────────────  Start Next.js  ────────────────────────────
+        cd /workdir/app &&
+        npm install --quiet &&
+        npm run dev -- --port 3000
+      "
+volumes:
+  validator-ledger:

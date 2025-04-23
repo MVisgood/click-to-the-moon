@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 300 100% 60%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom Pixel Font */
+@font-face {
+  font-family: "PixelFont";
+  src: url("/fonts/pixel-font.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PixelFontBold";
+  src: url("/fonts/pixel-font-bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Custom Utility Classes */
+.font-pixel {
+  font-family: "PixelFont", monospace;
+  letter-spacing: 1px;
+}
+
+.font-pixel-bold {
+  font-family: "PixelFontBold", monospace;
+  letter-spacing: 1px;
+}
+
+.bg-space-bg {
+  background-color: #050520;
+  background-image: radial-gradient(circle at center, #0a0a2a 0%, #050520 100%);
+}
+
+.bg-space-path {
+  background: linear-gradient(to bottom, rgba(138, 43, 226, 0.2), rgba(138, 43, 226, 0.05));
+}
+
+.text-neon-purple {
+  color: #b14aff;
+}
+
+.text-neon-green {
+  color: #4eff8a;
+}
+
+.text-neon-orange {
+  color: #ff7b4a;
+}
+
+.bg-neon-orange {
+  background-color: #ff7b4a;
+}
+
+.bg-neon-purple {
+  background-color: #b14aff;
+}
+
+.bg-neon-green {
+  background-color: #4eff8a;
+}
+
+.border-neon-purple {
+  border-color: #b14aff;
+}
+
+.border-neon-green {
+  border-color: #4eff8a;
+}
+
+.border-neon-orange {
+  border-color: #ff7b4a;
+}
+
+.glow-text {
+  text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+}
+
+.shadow-glow-orange {
+  box-shadow: 0 0 10px 2px rgba(255, 123, 74, 0.5);
+}
+
+/* Pixel Border */
+.pixel-border {
+  position: relative;
+  border: 2px solid rgba(138, 43, 226, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.2);
+}
+
+.pixel-image {
+  image-rendering: pixelated;
+}
+
+.pixel-button {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 0.2s ease;
+}
+
+.pixel-button:active {
+  transform: translateY(4px);
+}
+
+/* Star field animation */
+.stars-small,
+.stars-medium,
+.stars-large {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.stars-small {
+  background-image: radial-gradient(1px 1px at 100px 50px, white, rgba(0, 0, 0, 0)),
+    radial-gradient(1px 1px at 200px 150px, white, rgba(0, 0, 0, 0)),
+    radial-gradient(1px 1px at 300px 250px, white, rgba(0, 0, 0, 0)),
+    radial-gradient(1px 1px at 400px 350px, white, rgba(0, 0, 0, 0));
+  background-size: 600px 600px;
+  animation: stars-animation 60s linear infinite;
+}
+
+.stars-medium {
+  background-image: radial-gradient(2px 2px at 150px 100px, #b14aff, rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 250px 200px, #4eff8a, rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 350px 300px, #ff7b4a, rgba(0, 0, 0, 0));
+  background-size: 800px 800px;
+  animation: stars-animation 90s linear infinite;
+}
+
+.stars-large {
+  background-image: radial-gradient(3px 3px at 200px 150px, white, rgba(0, 0, 0, 0)),
+    radial-gradient(3px 3px at 300px 250px, #b14aff, rgba(0, 0, 0, 0)),
+    radial-gradient(3px 3px at 400px 350px, #4eff8a, rgba(0, 0, 0, 0));
+  background-size: 1000px 1000px;
+  animation: stars-animation 120s linear infinite;
+}
+
+@keyframes stars-animation {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(600px);
+  }
+}
+
+/* Rocket flame animation */
+.rocket-flame {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #ff7b4a, #ffcc00);
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+  animation: flame-animation 0.2s infinite alternate;
+}
+
+@keyframes flame-animation {
+  0% {
+    height: 70%;
+    opacity: 0.8;
+  }
+  100% {
+    height: 100%;
+    opacity: 1;
+  }
+}
